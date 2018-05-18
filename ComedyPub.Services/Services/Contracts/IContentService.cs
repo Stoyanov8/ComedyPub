@@ -8,9 +8,9 @@ namespace ComedyPub.Services.Services.Contracts
 {
     public interface IContentService
     {
-        Task<ContentViewModel> GetNewest();
+         Task<ContentViewModel> GetNewest(int currentContentCount);
 
-        Task<bool> Create(string title,string text,string creator,ContentType type);
+        Task<bool> Create(string title,string text,ContentType type,string username);
 
     }
 }

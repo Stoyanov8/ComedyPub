@@ -1,12 +1,10 @@
 ﻿function openNav() {
     document.getElementById("side").style.width = "150px";
-    document.getElementById("main").style.marginLeft = "150px";
     document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
 }
 
 function closeNav() {
     document.getElementById("side").style.width = "0";
-    document.getElementById("main").style.marginLeft = "0";
     document.body.style.backgroundColor = "white";
 }
 
@@ -30,26 +28,37 @@ function SaveAnimation() {
     AnimationButton();
 }
 function GetSuitedBox() {
-    let value = $('#addContentSelect').val();
-
-    if (value === '1') {  
-
-        $('#inputContentDiv input').remove();
-        let area = $('<textarea>');
-        area.addClass('tempInput');
-        area.prop('id', 'inputId');
-        $('#inputContentDiv')
-            .append(area);
-
-    } else {
-        $('#inputContentDiv textarea').remove();
-
-        let input = $('<input>');
-        input.addClass('tempInput');
-        area.prop('id', 'inputId');
-        input.prop('type', 'url');
-
-        $('#inputContentDiv')
-            .append(input);
+    let currentValue = $('#addContentSelect').val();
+    let savedValue = sessionStorage.getItem('contentType');
+ 
+    if (savedValue === undefined) {
+        SaveTypeInSession('0');
     }
+    else {
+        SaveTypeInSession(currentValue);
+    }
+
+    if (currentValue === '1') {
+        if (savedValue === '1') {
+            return;
+        }
+        $('#inputContent').hide();
+        $('#textAreaContent').show();
+
+    } else if (currentValue !== '1') {
+        if (savedValue === '0' || savedValue === '2') {
+            return;
+        }
+        $('#inputContent').show();
+        $('#textAreaContent').hide();
+    }
+}
+function SaveTypeInSession(type) {
+    sessionStorage.setItem('contentType', type);
+}
+function BindOptions() {
+    $('#addContentSelect')
+        .on('change', GetSuitedBox);
+    SaveTypeInSession('0');
+
 }

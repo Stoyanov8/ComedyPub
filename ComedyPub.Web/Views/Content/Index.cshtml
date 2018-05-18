@@ -1,4 +1,32 @@
-﻿
+﻿@model ContentViewModel
 @{
     ViewData["Title"] = "Index";
 }
+
+<div class="main">
+    @foreach (var content in Model.AllContent)
+    {
+        <article id="contentMain">
+            <h3>@content.Title</h3>
+            @{
+                if (content.Type == "Video")
+                {
+                    <iframe width="420" height="350"
+                            src="@content.Text" allowfullscreen></iframe>
+                }
+                else if (content.Type == "Picture")
+                {
+                    <img src="@content.Text" style="width:30em">
+                }
+                else
+                {
+                    <p>@content.Text</p>
+                }
+            }
+            <div id="contentUtility">
+                <a class="glyphicon glyphicon-chevron-up" id="upvoteBtn"></a>
+                <a class="glyphicon glyphicon-chevron-down" id="downvoteBtn"></a>
+            </div>
+        </article>
+                }
+</div>

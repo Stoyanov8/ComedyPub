@@ -16,24 +16,25 @@
             this.service = service;
         }
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int currentContentCount)
         {
-            return this.View();
-        }
+            var model = await this.service.GetNewest(currentContentCount);
+            return this.View(model);
+        }      
 
         public IActionResult Create() => this.View();
 
         [HttpPost]
         public async Task<IActionResult> Create(AddContentViewModel model)
         {
-            var user = this.User.Identity.Name;
+            var username = this.User.Identity.Name;
 
             if (!this.ModelState.IsValid)
             {
                 return this.View(model);
             }
 
-            var succes = await this.service.Create(model.Title, model.Text, user, model.Type);
+            var succes = await this.service.Create(model.Title, model.Text, model.Type, username);
 
             if (succes)
             {
